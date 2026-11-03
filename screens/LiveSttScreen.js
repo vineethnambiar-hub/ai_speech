@@ -19,16 +19,24 @@ import {
 import LiveAudioStream from 'react-native-live-audio-stream';
 
 const SARVAM_KEY = process.env.EXPO_PUBLIC_SARVAM_API_KEY ?? '';
+// Higher = less sensitive to quiet / far-field voices. Sarvam default is 0.3.
+const VAD_THRESHOLD = process.env.EXPO_PUBLIC_STT_VAD_THRESHOLD ?? '0.6';
+const MIN_SPEECH_MS = process.env.EXPO_PUBLIC_STT_MIN_SPEECH_MS ?? '400';
+const SILENCE_MS = process.env.EXPO_PUBLIC_STT_SILENCE_MS ?? '700';
 
 function socketUrl() {
   const params = new URLSearchParams({
-    language_code: 'en-IN',
+    // auto = detect language; codemix keeps Hindi in Devanagari + English as English.
+    language_code: 'auto',
     model: 'saaras:v4',
     stream_type: 'fast',
-    mode: 'transcribe',
+    mode: 'codemix',
     encoding: 'linear16',
     sample_rate: '16000',
     endpointing: 'vad',
+    threshold: String(VAD_THRESHOLD),
+    min_speech_duration_ms: String(MIN_SPEECH_MS),
+    silence_duration_ms: String(SILENCE_MS),
   });
   return `wss://api.sarvam.ai/speech-to-text-realtime/ws?${params}`;
 }
@@ -163,7 +171,9 @@ export default function LiveSttScreen({ onBack }) {
           <Text style={s.back}>← Back</Text>
         </Pressable>
         <Text style={s.title}>Live speech to text</Text>
-        <Text style={s.sub}>Sarvam socket. Words show up while you are still speaking.</Text>
+        <Text style={s.sub}>
+          codemix · auto lang · VAD threshold {VAD_THRESHOLD} · min speech {MIN_SPEECH_MS}ms
+        </Text>
       </View>
 
       <ScrollView style={s.scroll} contentContainerStyle={s.content}>

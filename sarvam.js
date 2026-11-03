@@ -9,9 +9,10 @@ import { SARVAM_API_KEY } from './env';
 export function buildSttWsUrl() {
   const params = new URLSearchParams({
     'api-subscription-key': SARVAM_API_KEY,
-    language_code: 'en-IN',
+    language_code: 'auto',
     model: 'saaras:v4',
     stream_type: 'fast',
+    mode: 'codemix',
     encoding: 'linear16',
     sample_rate: '16000',
     endpointing: 'vad',

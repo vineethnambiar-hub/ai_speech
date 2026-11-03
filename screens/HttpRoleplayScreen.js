@@ -30,18 +30,21 @@ const SARVAM_KEY = process.env.EXPO_PUBLIC_SARVAM_API_KEY ?? '';
 const API_BASE = (process.env.EXPO_PUBLIC_ROLEPLAY_API_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 const API_TOKEN = process.env.EXPO_PUBLIC_ROLEPLAY_TOKEN ?? 'local-dev';
 const SILENCE_MS = Number(process.env.EXPO_PUBLIC_STT_SILENCE_MS ?? '700');
+const VAD_THRESHOLD = process.env.EXPO_PUBLIC_STT_VAD_THRESHOLD ?? '0.6';
+const MIN_SPEECH_MS = process.env.EXPO_PUBLIC_STT_MIN_SPEECH_MS ?? '400';
 
 function sttSocketUrl() {
   const params = new URLSearchParams({
-    language_code: 'en-IN',
+    language_code: 'auto',
     model: 'saaras:v4',
     stream_type: 'fast',
-    mode: 'transcribe',
+    mode: 'codemix',
     encoding: 'linear16',
     sample_rate: '16000',
     endpointing: 'vad',
+    threshold: String(VAD_THRESHOLD),
     silence_duration_ms: String(SILENCE_MS),
-    min_speech_duration_ms: '250',
+    min_speech_duration_ms: String(MIN_SPEECH_MS),
   });
   return `wss://api.sarvam.ai/speech-to-text-realtime/ws?${params}`;
 }
