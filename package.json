@@ -4,15 +4,23 @@
   "main": "index.js",
   "dependencies": {
     "expo": "~58.0.19",
+    "expo-audio": "~58.0.10",
+    "expo-file-system": "~58.0.11",
     "expo-status-bar": "~58.0.4",
     "react": "19.3.0",
-    "react-native": "0.88.0"
+    "react-native": "0.88.0",
+    "react-native-live-audio-stream": "^1.1.1",
+    "sarvam-conv-ai-sdk": "^0.0.42",
+    "sarvamai": "^1.1.12"
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "dotenv": "^18.0.9"
+  }
 }
